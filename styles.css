@@ -1,0 +1,18 @@
+canvas{
+    border:solid;
+}
+
+#log{
+    border:solid 3px gray;
+    background: black;
+    color: white;
+    width:50%;
+}
+
+#help{
+    width:50%;
+}
+
+#instruction{
+    position:absolute;
+}
