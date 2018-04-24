@@ -250,6 +250,7 @@ $(document).click(function(evt){
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
                         if (checkTile.side === "red" && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
+                            break;
                         }
                     }
                 }
