@@ -1,4 +1,5 @@
 var board;
+var square = 8;
 var canvas = document.getElementById("board");
 var screen = canvas.getContext("2d");
 var turn = "blue";
@@ -9,17 +10,22 @@ var help = $("#help");
 var gameFinish = false;
 
 function initialize(){
-    board = new Array(7);
+    turn = "blue";
+    turns = 1;
+    gameFinish = false;
+    log.text("Player 1's Turn (Blue)");
+    help.text("Player 1 (Blue), please choose a point on your zone to start");
+    board = new Array(square);
     for (var i = 0;i < board.length; i ++){
-        board[i] = new Array(7);
+        board[i] = new Array(square);
     }
     for (var i = 0;i < board.length; i ++){
         for (var i2 = 0;i2 < board.length; i2 ++){
             board[i][i2] = {attr:"empty", cannon:0, x:i*50+25, y:i2*50+25, side:"none", truex:i, truey:i2};
         }
     }
-    canvas.width = 350;
-    canvas.height = 350;
+    canvas.width = square * 50;
+    canvas.height = square * 50;
     render();
 }
 initialize();
@@ -115,12 +121,12 @@ function getAdjacent(tile){
 function render(){
     screen.clearRect(0, 0, canvas.width, canvas.height);
     //draw the sides
-    fillColor(0,0,350,100,"blue");
-    fillColor(0,250,350,350,"red");
+    fillColor(0,0,square*50,100,"blue");
+    fillColor(0,square*50-100,square*50,square*50,"red");
     //draw the lines
-    for (var i = 1; i <= 6; i += 1){
-        drawLine("black",0,i*50,350,i*50);
-        drawLine("black",i*50,0,i*50,350);
+    for (var i = 1; i < board.length; i += 1){
+        drawLine("black",0,i*50,board.length*50,i*50);
+        drawLine("black",i*50,0,i*50,board.length*50);
     }
     //draw the objects inside the board
     for (var i = 0;i < board.length; i ++){
@@ -215,7 +221,7 @@ $(document).click(function(evt){
             if ((adj[i].side === turn && tile.side === "none" && adj[i].attr !== "destroy")
                 || turns <= 2){
                 //if first two turns, check if blue's turn
-                if ((turns <= 2 && ( (turn === "blue" && tile.truey <= 1) || (turn === "red" && tile.truey >= 5) ) ) || turns > 2){
+                if ((turns <= 2 && ( (turn === "blue" && tile.truey <= 1) || (turn === "red" && tile.truey >= square - 2) ) ) || turns > 2){
                     //render instruction
                     //set tile to border
                     tile.attr = "border";
@@ -298,7 +304,7 @@ function checkWin(){
             var tile = board[i][i2];
             //check if a player make it to the other side
             if ((tile.side === "red" && tile.truey <= 1) ||
-                (tile.side === "blue" && tile.truey >= 5)){
+                (tile.side === "blue" && tile.truey >= square - 2)){
                 var win = true;
                 var side = tile.side;
             }
@@ -307,7 +313,7 @@ function checkWin(){
                 if (tile.truey <= 1){
                     blueZoneTile ++;
                 }
-                if (tile.truey >= 5){
+                if (tile.truey >= square - 2){
                     redZoneTile ++;
                 }
             }
