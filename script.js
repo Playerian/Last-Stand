@@ -1,5 +1,5 @@
 var board;
-var square = 7;
+var square = 8;
 var canvas = document.getElementById("board");
 var screen = canvas.getContext("2d");
 var turn = "blue";
@@ -8,6 +8,8 @@ var starting = true;
 var turns = 1;
 var help = $("#help");
 var gameFinish = false;
+var blueColor = "black";
+var redColor = "green";
 
 function initialize(){
     turn = "blue";
@@ -121,8 +123,10 @@ function getAdjacent(tile){
 function render(){
     screen.clearRect(0, 0, canvas.width, canvas.height);
     //draw the sides
+    screen.globalAlpha=0.3;
     fillColor(0,0,square*50,100,"blue");
     fillColor(0,square*50-100,square*50,square*50,"red");
+    screen.globalAlpha=1;
     //draw the lines
     for (var i = 1; i < board.length; i += 1){
         drawLine("black",0,i*50,board.length*50,i*50);
@@ -265,7 +269,9 @@ $(document).click(function(evt){
         }
     }
     //render the canvas
-    render();
+    if (turns >= 3){
+        render();
+    }
     //render the instruction
     if (turns === 1){
         help.text("Player 1 (Blue), please choose a point on your zone to start");
