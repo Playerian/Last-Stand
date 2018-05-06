@@ -1,5 +1,5 @@
 var board;
-var square = 8;
+var square = 7;
 var canvas = document.getElementById("board");
 var screen = canvas.getContext("2d");
 var turn = "blue";
