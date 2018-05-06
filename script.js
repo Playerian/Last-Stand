@@ -8,7 +8,7 @@ var starting = true;
 var turns = 1;
 var help = $("#help");
 var gameFinish = false;
-var blueColor = "black";
+var blueColor = "purple";
 var redColor = "green";
 
 function initialize(){
@@ -37,9 +37,9 @@ function drawLine(){
     screen.lineWidth = 1;
     screen.strokeStyle = "black";
     if (arguments[0] === "red"){
-        screen.strokeStyle = "orange";
+        screen.strokeStyle = redColor;
     } else if (arguments[0] === "blue"){
-        screen.strokeStyle = "purple";
+        screen.strokeStyle = blueColor;
     }
     screen.beginPath();
     if (arguments.length >= 5){
@@ -68,9 +68,9 @@ function Circle(a,b,c,color){
     screen.arc(a,b,c,0,2*Math.PI);
     screen.strokeStyle = "black";
     if (color === "red"){
-        screen.strokeStyle = "orange";
+        screen.strokeStyle = redColor;
     } else if (color === "blue"){
-        screen.strokeStyle = "purple";
+        screen.strokeStyle = blueColor;
     }
     screen.stroke();
 }
@@ -145,20 +145,20 @@ function render(){
             // draw a rectangle if cannon is larger than 1
             if (tile.cannon >= 1){
                 if (tile.side === "red"){
-                    Rectangle(tile.x-6,tile.y-18,tile.x+6,tile.y,"orange");
+                    Rectangle(tile.x-6,tile.y-18,tile.x+6,tile.y,redColor);
                 }
                 if (tile.side === "blue"){
-                    Rectangle(tile.x-6,tile.y,tile.x+6,tile.y+18,"purple");
+                    Rectangle(tile.x-6,tile.y,tile.x+6,tile.y+18,blueColor);
                 }
             }
             
             // draw an arc if cannon is 2
             if (tile.cannon >= 2){
                 if (tile.side === "red"){
-                    Arc(tile.x,tile.y,22,1.25*Math.PI,1.75*Math.PI,"orange");
+                    Arc(tile.x,tile.y,22,1.25*Math.PI,1.75*Math.PI,redColor);
                 }
                 if (tile.side === "blue"){
-                    Arc(tile.x,tile.y,22,0.25*Math.PI,0.75*Math.PI,"purple");
+                    Arc(tile.x,tile.y,22,0.25*Math.PI,0.75*Math.PI,blueColor);
                 }
             }
             
@@ -339,6 +339,7 @@ function checkWin(){
 }
 
 function Win(side){
+    render();
     gameFinish = true;
     log.text("Restart by pressing R");
     help.text("The "+side+" side has won the game!");
