@@ -1,5 +1,5 @@
 var board;
-var square = 7;
+var square = 8;
 var canvas = document.getElementById("board");
 var screen = canvas.getContext("2d");
 var turn = "blue";
@@ -10,6 +10,7 @@ var help = $("#help");
 var gameFinish = false;
 var blueColor = "purple";
 var redColor = "green";
+var direction = "up";
 
 function initialize(){
     turn = "blue";
@@ -17,18 +18,21 @@ function initialize(){
     gameFinish = false;
     log.text("Player 1's Turn (Blue)");
     help.text("Player 1 (Blue), please choose a point on your zone to start");
-    board = new Array(square);
+    board = [];
+    board.length = square;
     for (var i = 0;i < board.length; i ++){
-        board[i] = new Array(square);
+        board[i] = [];
+        board[i].length = square;
     }
     for (var i = 0;i < board.length; i ++){
         for (var i2 = 0;i2 < board.length; i2 ++){
-            board[i][i2] = {attr:"empty", cannon:0, x:i*50+25, y:i2*50+25, side:"none", truex:i, truey:i2};
+            board[i][i2] = {attr:"empty", cannon:0, cannonDirection: "", x:i*50+25, y:i2*50+25, side:"none", color:"none", truex:i, truey:i2};
         }
     }
     canvas.width = square * 50;
     canvas.height = square * 50;
     render();
+    renderButton();
 }
 initialize();
 
@@ -143,22 +147,29 @@ function render(){
             }
             
             // draw a rectangle if cannon is larger than 1
-            if (tile.cannon >= 1){
-                if (tile.side === "red"){
-                    Rectangle(tile.x-6,tile.y-18,tile.x+6,tile.y,redColor);
-                }
-                if (tile.side === "blue"){
-                    Rectangle(tile.x-6,tile.y,tile.x+6,tile.y+18,blueColor);
+            if (tile.cannon >= 1 && tile.attr !== "destroy"){
+                //check direction
+                if (tile.cannonDirection === "up"){
+                    Rectangle(tile.x-6, tile.y-18, tile.x+6, tile.y, tile.color);
+                } else if (tile.cannonDirection === "down"){
+                    Rectangle(tile.x-6, tile.y, tile.x+6, tile.y+18, tile.color);
+                } else if (tile.cannonDirection === "left"){
+                    Rectangle(tile.x-18, tile.y-6, tile.x, tile.y+6, tile.color);
+                } else if (tile.cannonDirection === "right"){
+                    Rectangle(tile.x, tile.y-6, tile.x+18, tile.y+6, tile.color);
                 }
             }
             
             // draw an arc if cannon is 2
-            if (tile.cannon >= 2){
-                if (tile.side === "red"){
-                    Arc(tile.x,tile.y,22,1.25*Math.PI,1.75*Math.PI,redColor);
-                }
-                if (tile.side === "blue"){
-                    Arc(tile.x,tile.y,22,0.25*Math.PI,0.75*Math.PI,blueColor);
+            if (tile.cannon >= 2 && tile.attr !== "destroy"){
+                if (tile.cannonDirection === "up"){
+                    Arc(tile.x, tile.y, 22, 1.25*Math.PI, 1.75*Math.PI, tile.color);
+                } else if (tile.cannonDirection === "down"){
+                    Arc(tile.x, tile.y, 22, 0.25*Math.PI, 0.75*Math.PI, tile.color);
+                } else if (tile.cannonDirection === "left"){
+                    Arc(tile.x, tile.y, 22, 0.75*Math.PI, 1.25*Math.PI, tile.color);
+                } else if (tile.cannonDirection === "right"){
+                    Arc(tile.x, tile.y, 22, 1.75*Math.PI, 0.25*Math.PI, tile.color);
                 }
             }
             
@@ -195,6 +206,20 @@ function render(){
     }
 }
 
+function renderButton(){
+    $(".button").attr("class","button");
+    $("#"+direction).addClass("active");
+}
+
+function setDirection(arg){
+    direction = arg;
+    renderButton();
+}
+
+$(".button").click(function(){
+    setDirection($(this).attr("id"));
+});
+
 $(document).keydown(function(key){
     if (gameFinish === true && key.key.toLowerCase() === "r"){
         initialize();
@@ -230,6 +255,11 @@ $(document).click(function(evt){
                     //set tile to border
                     tile.attr = "border";
                     tile.side = turn;
+                    if (turn === "red"){
+                        tile.color = redColor;
+                    } else {
+                        tile.color = blueColor;
+                    }
                     changeTurn(tile);
                     break;
                 }
@@ -240,25 +270,49 @@ $(document).click(function(evt){
         if (tile.side === turn && tile.attr === "border" && tile.cannon < 2){
             //increase cannon count by 1 
             tile.cannon ++;
+            //set cannon direction if it just got setted up
+            if  (tile.cannon === 1){
+                tile.cannonDirection = direction;
+            }
             //if cannon count is 2, fire it
             if (tile.cannon === 2){
-                //if red, fire up, else fire down
-                if (tile.side === "red"){
+                //check firing direction
+                if (tile.cannonDirection === "up"){
                     //check from bottom to top
                     for (var i = tile.truey; i >= 0; i --){
                         var checkTile = board[tile.truex][i];
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
-                        if (checkTile.side === "blue" && checkTile.attr !== "destroy"){
+                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
                             break;
                         }
                     }
-                } else {
+                } else if (tile.cannonDirection === "down"){
                     //check from top to bottom
                     for (var i = tile.truey; i < board.length; i ++){
                         var checkTile = board[tile.truex][i];
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
-                        if (checkTile.side === "red" && checkTile.attr !== "destroy"){
+                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
+                            checkTile.attr = "destroy";
+                            break;
+                        }
+                    }
+                } else if (tile.cannonDirection === "left"){
+                    //check from right to left
+                    for (var i = tile.truex; i >= 0; i --){
+                        var checkTile = board[i][tile.truey];
+                        //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
+                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
+                            checkTile.attr = "destroy";
+                            break;
+                        }
+                    }
+                } else if (tile.cannonDirection === "right"){
+                    //check from right to left
+                    for (var i = tile.truex; i < board.length; i ++){
+                        var checkTile = board[i][tile.truey];
+                        //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
+                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
                             break;
                         }
@@ -268,7 +322,7 @@ $(document).click(function(evt){
             changeTurn(tile);
         }
     }
-    //render the canvas
+    //render the canvas if after the second turn
     if (turns >= 3){
         render();
     }
@@ -291,9 +345,11 @@ function changeTurn(tile){
     if (turn === "red"){
         turn = "blue";
         log.text("Player 1's Turn (Blue)");
+        setDirection("down");
     } else {
         turn = "red";
         log.text("Player 2's Turn (Red)");
+        setDirection("up");
     }
     //add a turns
     turns ++;
