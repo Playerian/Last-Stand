@@ -7,6 +7,7 @@ canvas{
     background: black;
     color: white;
     width:50%;
+    margin-top:10px;
 }
 
 #help{
@@ -15,4 +16,9 @@ canvas{
 
 #instruction{
     position:absolute;
+}
+
+.active, .button:hover{
+    position:relative;
+    top: -5px;
 }
