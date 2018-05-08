@@ -264,6 +264,14 @@ $(document).click(function(evt){
                     break;
                 }
             }
+            //check if adjecent tile is destroy and is owned by the side
+            if (adj[i].side === turn && tile.attr === "destroy"){
+                tile.attr = "empty";
+                tile.cannon = 0;
+                tile.side = "none";
+                changeTurn(tile);
+                break;
+            }
         }
         //set up a cannon
         //if click on a tile that has a point on it own by the side
@@ -282,7 +290,7 @@ $(document).click(function(evt){
                     for (var i = tile.truey; i >= 0; i --){
                         var checkTile = board[tile.truex][i];
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
-                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
+                        if (checkTile.side !== tile.side && checkTile.side !== "none" && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
                             break;
                         }
@@ -292,7 +300,7 @@ $(document).click(function(evt){
                     for (var i = tile.truey; i < board.length; i ++){
                         var checkTile = board[tile.truex][i];
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
-                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
+                        if (checkTile.side !== tile.side && checkTile.side !== "none" && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
                             break;
                         }
@@ -302,7 +310,7 @@ $(document).click(function(evt){
                     for (var i = tile.truex; i >= 0; i --){
                         var checkTile = board[i][tile.truey];
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
-                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
+                        if (checkTile.side !== tile.side && checkTile.side !== "none" && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
                             break;
                         }
@@ -312,7 +320,7 @@ $(document).click(function(evt){
                     for (var i = tile.truex; i < board.length; i ++){
                         var checkTile = board[i][tile.truey];
                         //if the tile that is checking has a different side and the tile is not destroy, destroy the tile
-                        if (checkTile.side !== tile.side && checkTile.attr !== "destroy"){
+                        if (checkTile.side !== tile.side && checkTile.side !== "none" && checkTile.attr !== "destroy"){
                             checkTile.attr = "destroy";
                             break;
                         }
