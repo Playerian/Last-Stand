@@ -1,3 +1,4 @@
+/*global $ navigator*/
 var board;
 var square = 8;
 var canvas = document.getElementById("board");

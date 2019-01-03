@@ -4,7 +4,24 @@
         <title>Last Stand</title>
     </head>
     <body>
-        <canvas id="board"></canvas>
+        <div id='firstRow'>
+            <div id='canvas'>
+                <canvas id="board"></canvas>
+            </div>
+            <div id='platform'>
+                <div id='blueName'>blue name</div>
+                <div id="redName">red name</div>
+            </div>
+        </div>
+        <div id="log">Player 1's Turn (Blue)</div>
+        <div id="directions">
+            <p>Choose Cannon Direction</p>
+            <button id="up" class="button">Up</button>
+            <button id="down" class="button">Down</button>
+            <button id="left" class="button">Left</button>
+            <button id="right" class="button">Right</button>
+        </div>
+        <br>
         <span id="instruction">
             Game Rule: <br>
             1. Each Player choose a starting point at their corresponding zones. Both Player can't see their opponent's point until both player has place their points.<br><br>
@@ -16,19 +33,8 @@
             1. If one Player make a point onto the opponent's zone, that Player wins.<br><br>
             2. If one Player can't move, that Player loses.<br><br>
         </span>
-        <div id="directions">
-            <p>Choose Cannon Direction</p>
-            <button id="up" class="button">Up</button>
-            <button id="down" class="button">Down</button>
-            <button id="left" class="button">Left</button>
-            <button id="right" class="button">Right</button>
-        </div>
-        <div id="log">Player 1's Turn (Blue)</div>
-        <h4>Instruction:</h4>
-        <div id="help">Player 1 (Blue), please choose a point on your zone to start</div>
-        <br>
-        <button id='restart'>Restart</button>
         <a href="https://docs.google.com/forms/d/1TBaVO9aSfyuiF-EHbYhOAd48kSUmUli4In0AhZAZSTs/edit#responses" target="_blank">Suggestion Box</a>
+        <button id='restart'>Restart</button>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styles.css"/>
         <script type="text/javascript" src="script.js"></script>

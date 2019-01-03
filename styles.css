@@ -1,5 +1,7 @@
-canvas{
+#canvas{
     border:solid;
+    width:400px;
+    height:400px;
 }
 
 #log{
@@ -15,10 +17,100 @@ canvas{
 }
 
 #instruction{
-    position:absolute;
+    
 }
 
 .active, .button:hover{
     position:relative;
     top: -5px;
+}
+
+#start{
+    
+}
+
+#game{
+    display:none;
+}
+
+#waiting{
+    display:none;
+}
+
+#firstRow{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+#platform{
+    width:150px;
+    border: solid;
+    text-align: center;
+    margin-left: 10px;
+    display:flex;
+    flex-wrap:wrap;
+}
+
+#blueName, #redName{
+    width:100%;
+    text-align:center;
+}
+
+#blueName{
+    color:blue;
+}
+
+#redName{
+    align-self: flex-end;
+    color:red;
+}
+
+#draw{
+    width:10px;
+    height:100px;
+    background:black;
+    transform: rotate(0deg);
+    position:relative;
+    left:50px;
+    animation: rotate 2.5s infinite ease-in-out
+    ,colorFade 14s infinite;
+}
+
+@keyframes colorFade{
+    from {
+        background: red;
+    }
+    14% {
+        background: orange;
+    }
+    28% {
+        background: yellow;
+    }
+    42% {
+        background: green;
+    }
+    56% {
+        background: cyan;
+    }
+    70% {
+        background: blue;
+    }
+    88% {
+        background: purple;
+    }
+    to {
+        background: red;
+    }
+}
+
+@keyframes rotate{
+    from {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
