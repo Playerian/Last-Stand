@@ -216,7 +216,7 @@ function setDirection(arg){
     renderButton();
 }
 
-$(".button").on('click', function(){
+$(".button").on(isMobile ? 'touchend' : 'click', function(){
     setDirection($(this).attr("id"));
 });
 
@@ -226,7 +226,7 @@ $(document).keydown(function(key){
     }
 });
 
-$(document).on('click', function(evt){
+$(document).on(isMobile ? 'touchend' : 'click', function(evt){
     // check for mouse click
     var x = evt.pageX - $("#board").offset().left;
     var y = evt.pageY - $("#board").offset().top;
