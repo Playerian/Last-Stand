@@ -216,7 +216,7 @@ function setDirection(arg){
     renderButton();
 }
 
-$(".button").click(function(){
+$(".button").on('click', function(){
     setDirection($(this).attr("id"));
 });
 
@@ -226,7 +226,7 @@ $(document).keydown(function(key){
     }
 });
 
-$(document).click(function(evt){
+$(document).on('click', function(evt){
     // check for mouse click
     var x = evt.pageX - $("#board").offset().left;
     var y = evt.pageY - $("#board").offset().top;
