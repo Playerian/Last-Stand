@@ -222,6 +222,10 @@ $(".button").on(isMobile ? 'touchend' : 'click', function(){
     setDirection($(this).attr("id"));
 });
 
+$('#restart').on(isMobile ? 'touchend' : 'click', function(){
+    initialize();
+});
+
 $(document).keydown(function(key){
     if (gameFinish === true && key.key.toLowerCase() === "r"){
         initialize();
